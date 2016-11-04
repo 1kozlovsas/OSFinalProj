@@ -47,12 +47,11 @@
 #include <linux/kprobes.h>
 #include <linux/user_namespace.h>
 #include <linux/binfmts.h>
-
+#include "/home/sashaadmin/linux-stable/kernel/printk/printk.c"
 #include <linux/sched.h>
 #include <linux/rcupdate.h>
 #include <linux/uidgid.h>
 #include <linux/cred.h>
-#include <syslog.h>
 
 #include <linux/kmsg_dump.h>
 /* Move somewhere else to avoid recompiling? */
@@ -386,17 +385,14 @@ error:
  */
 SYSCALL_DEFINE1(print_group, int, location)
 {
-setlogmask (LOG_UPTO (LOG_NOTICE));
 
 if(location == 0){
 	printk(KERN_INFO "Alexandre Kozlov, Ian Kerr");
 }
 else{
-	openlog ("print_group", LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
-	syslog (LOG_INFO, "Alexandre Kozlov, Ian Kerr");
-		
+	syslog_print("Alexandre Kozlov, Ian Kerr", 27);
 }
-closelog ();
+return 0;
 }
 
 
