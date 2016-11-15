@@ -3,17 +3,6 @@
 #include <linux/syscalls.h>
 
 
-#include <linux/sched.h>
-
-
-#include <linux/dirent.h>
-#include <linux/slab.h>
-#include <linux/version.h> 
-	#include <linux/proc_ns.h>
-
-
-	#include <linux/fdtable.h>
-
 #define MODULE_NAME "Simple syscall hook"
 /*
 Typedef function pointers to syscalls so that declaring
