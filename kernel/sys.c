@@ -180,7 +180,6 @@ out:
 //Custom syscalls start here
 SYSCALL_DEFINE1(print_group, int, location)
 {
-	char *output = "Tiny riiiiiiiiiick!";
 	if(location == 0){
 		printk(KERN_CRIT "Alexandre Kozlov, Ian Kerr");
 	}
@@ -191,17 +190,17 @@ SYSCALL_DEFINE1(print_group, int, location)
 }
 SYSCALL_DEFINE1(find_process, char *, process_name)
 {
-	char *buf = char*__get_free_page(GFP_USER);
+	char *buf = (char*)__get_free_page(GFP_USER);
 	char *name = NULL;
-	struct file *exe_file
-	struct path *exe_path
+	struct file *exe_file;
+	struct path *exe_path;
 	struct task_struct *p = current;
 	for_each_process(p){
-		exe_file = get_task_exe_file(task);
+		exe_file = get_task_exe_file(p);
 		if(exe_file){
-			*exe_path = exe_file->f_path
-			name = dentry_path(exe_path->dentry)
-			printf("Name of process with PID %d is %s\n", p->pid, name);
+			*exe_path = exe_file->f_path;
+			name = dentry_path(exe_path->dentry, buf, PAGE_SIZE);
+			printk("Name of process with PID %d is %s\n", p->pid, name);
 			//path_get(&exe_file->f_path)
 			//fput(exe_file)
 		}
