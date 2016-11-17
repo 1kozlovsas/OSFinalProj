@@ -177,6 +177,40 @@ out:
 	return error;
 }
 
+//Custom syscalls start here
+SYSCALL_DEFINE1(print_group, int, location)
+{
+	char *output = "Tiny riiiiiiiiiick!";
+	if(location == 0){
+		printk(KERN_CRIT "Alexandre Kozlov, Ian Kerr");
+	}
+	else{
+		printk(KERN_INFO "Tiny riiiiiiiiiick!");
+	}
+	return 0;
+}
+SYSCALL_DEFINE1(find_process, char *, process_name)
+{
+	char *buf = char*__get_free_page(GFP_USER);
+	char *name = NULL;
+	struct file *exe_file
+	struct path *exe_path
+	struct task_struct *p = current;
+	for_each_process(p){
+		exe_file = get_task_exe_file(task);
+		if(exe_file){
+			*exe_path = exe_file->f_path
+			name = dentry_path(exe_path->dentry)
+			printf("Name of process with PID %d is %s\n", p->pid, name);
+			//path_get(&exe_file->f_path)
+			//fput(exe_file)
+		}
+	}
+
+	return 0;
+}
+//Custom syscalls end here
+
 SYSCALL_DEFINE3(setpriority, int, which, int, who, int, niceval)
 {
 	struct task_struct *g, *p;
@@ -388,20 +422,6 @@ error:
  *
  * SMP: Same implicit races as above.
  */
-SYSCALL_DEFINE1(print_group, int, location)
-{
-	char *output = "Tiny riiiiiiiiiick!";
-	if(location == 0){
-		printk(KERN_CRIT "Alexandre Kozlov, Ian Kerr");
-	}
-	else{
-	//syslog_print(output, 20);
-	//do_syslog()
-		printk(KERN_INFO "Tiny riiiiiiiiiick!");
-	}
-	return 0;
-}
-
 
 
 SYSCALL_DEFINE1(setgid, gid_t, gid)

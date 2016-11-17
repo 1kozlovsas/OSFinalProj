@@ -336,6 +336,7 @@
 327	64	preadv2			sys_preadv2
 328	64	pwritev2		sys_pwritev2
 329	common	print_group		sys_print_group
+330	common	find_process		sys_find_process
 
 #
 # x32-specific system call numbers start at 512 to avoid cache impact
