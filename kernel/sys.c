@@ -190,14 +190,16 @@ SYSCALL_DEFINE1(print_group, int, location)
 }
 SYSCALL_DEFINE1(find_process, char *, process_name)
 {
-	printk("Well, the call is working at least..\n");
+
 	struct task_struct *g;
+	char *kprocess_name;
+	kprocess_name = kzalloc(30, GFP_KERNEL);
+	copy_from_user(kprocess_name, process_name, 30);
 	for_each_process(g){
-		if(strcmp(process_name, g->comm) == 0){
+		if(strcmp(kprocess_name, g->comm) == 0){
 			printk(KERN_CRIT "Process: %s\nPID: %d\n", g->comm, g->pid);
 		}
 	}
-
 	return 0;
 }
 //Custom syscalls end here
