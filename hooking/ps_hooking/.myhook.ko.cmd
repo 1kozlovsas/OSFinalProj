@@ -1,0 +1,1 @@
+cmd_/home/ian/cprograms/SYST44288/major/hooking/myhook.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/ian/cprograms/SYST44288/major/hooking/myhook.ko /home/ian/cprograms/SYST44288/major/hooking/myhook.o /home/ian/cprograms/SYST44288/major/hooking/myhook.mod.o
