@@ -7,8 +7,8 @@ struct timeval t;
 static int __init hook_init(void)
 {
 	
-	do_gettimeofday(&t);
-	printk("Starting module at epoch time %lu\n", t.tv_sec);
+	do_gettimeofday(&t);//using struct timeval's methods to obtain time
+	printk("Starting module at epoch time %lu\n", t.tv_sec);//outputting in demsg
 	return 0;
 }
 
