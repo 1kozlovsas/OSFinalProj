@@ -41,6 +41,7 @@ unsigned long *get_syscall_table(void)
 
 
 asmlinkage int hacked_print_group(int location){
+	//This is a re-write of our syscall, and what we will replace our system call with.
 	if(location == 0){
 		printk(KERN_CRIT "rreK naI ,volzoK erdnaxelA");
 	}
@@ -56,7 +57,7 @@ static int __init hook_init(void)
 {
 	printk("Starting module\n");
 
-	sys_call_table = get_syscall_table();
+	sys_call_table = get_syscall_table();//grabbing current syscall table 
 	if (!sys_call_table)
 		return -1;
 
@@ -72,7 +73,7 @@ static int __init hook_init(void)
 	sys_call_table[__NR_print_group] = (unsigned long)hacked_print_group; //Implant our hooks
 	write_cr0(cr0); //Reprotect memory (The kernel is now happy again)
 
-	if(sys_call_table[__NR_print_group] == (unsigned long)hacked_print_group)
+	if(sys_call_table[__NR_print_group] == (unsigned long)hacked_print_group)//error check to make sure it worked
 	printk("print_group hooked\n");
 	else{
 		printk("Failed to hook print_group\n");
