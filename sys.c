@@ -383,14 +383,15 @@ error:
  *
  * SMP: Same implicit races as above.
  */
+//Our syscall!
 SYSCALL_DEFINE1(print_group, int, location)
 {
 
 if(location == 0){
-	printk(KERN_INFO "Alexandre Kozlov, Ian Kerr");
+	printk(KERN_INFO "Alexandre Kozlov, Ian Kerr");//KERN_INFO is basic info message
 }
 else{
-	syslog_print("Alexandre Kozlov, Ian Kerr", 27);
+	syslog_print("Alexandre Kozlov, Ian Kerr", 27);//syslog_print requires us to specify length of string
 }
 return 0;
 }
