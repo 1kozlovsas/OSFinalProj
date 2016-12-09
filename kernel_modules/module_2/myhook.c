@@ -33,7 +33,7 @@ int process_finder(void* input){
 static int __init hook_init(void)
 {
 	printk("Starting module\n");
-	my_thread = kthread_run(&process_finder,NULL,"Process finder");
+	my_thread = kthread_run(&process_finder,NULL,"Process finder");//Starting kernel thread-shoutout to Ian for this!
 	/*int highestpid;//, i; 
 	highestpid = 0;
 	char *process_name = "my_proc"; //Look for this process name
@@ -55,7 +55,7 @@ static int __init hook_init(void)
 
 static void __exit hook_cleanup(void)
 {
-	kthread_stop(my_thread);
+	kthread_stop(my_thread);//Closing thread
 	printk("Closing module\n");
 }
 
